@@ -59,7 +59,7 @@ if (window.top !== window.self) {
       img.style.left = `${x}px`;
       pillButtonContainer.querySelector(
         '#overlay-toggle-child'
-      ).innerText = `Load settings for '${name}'`;
+      ).innerText = `Toggle overlay for '${name}'`;
     };
 
     const createButton = (text, onClick, id) => {
