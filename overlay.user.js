@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         r/place 2022 Image Overlay
 // @namespace    http://tampermonkey.net/
-// @version      0.3
+// @version      0.4
 // @description  Script that adds a button to toggle an hardcoded image shown in the 2022's r/place canvas
 // @author       g-otn
 // @match        https://hot-potato.reddit.com/embed*
@@ -24,6 +24,7 @@ if (window.top !== window.self) {
     img.style.imageRendering = 'pixelated';
     img.style.opacity = OVERLAY_IMAGE_MAX_OPACITY;
     img.style.outline = '5px inset grey';
+    img.style.zIndex = '100';
 
     const mainContainer = document
       .querySelector('mona-lisa-embed')
@@ -51,12 +52,18 @@ if (window.top !== window.self) {
         url,
         x,
         y,
+        width,
+        height,
         name = '(unnamed)',
       } = JSON.parse(window.prompt('Paste the overlay settings JSON to load'));
 
       img.src = url;
       img.style.top = `${y}px`;
       img.style.left = `${x}px`;
+      if (width && height) {
+        img.style.width = `${width}px`;
+        img.style.height = `${height}px`;
+      }
       img.style.opacity = OVERLAY_IMAGE_MAX_OPACITY;
       pillButtonContainer.querySelector(
         '#overlay-toggle-child'
