@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         r/place 2022 Image Overlay
 // @namespace    http://tampermonkey.net/
-// @version      0.2
+// @version      0.3
 // @description  Script that adds a button to toggle an hardcoded image shown in the 2022's r/place canvas
 // @author       g-otn
 // @match        https://hot-potato.reddit.com/embed*
@@ -13,7 +13,7 @@ if (window.top !== window.self) {
   addEventListener('load', () => {
     // ==============================================
 
-    const OVERLAY_IMAGE_MAX_OPACITY = 0.9;
+    const OVERLAY_IMAGE_MAX_OPACITY = '0.9';
 
     // ==============================================
     // Insert image
@@ -34,14 +34,14 @@ if (window.top !== window.self) {
     positionContainer.appendChild(img);
 
     // ==============================================
-    // Add button to toggle overlay
+    // Add buttons to toggle overlay
 
     const pillButtonContainer = mainContainer.querySelector(
       'mona-lisa-status-pill'
     ).shadowRoot;
 
     const toggleOverlay = (e) => {
-      img.style.opacity === OVERLAY_IMAGE_MAX_OPACITY.toString()
+      img.style.opacity === OVERLAY_IMAGE_MAX_OPACITY
         ? (img.style.opacity = '0')
         : (img.style.opacity = OVERLAY_IMAGE_MAX_OPACITY);
     };
@@ -57,6 +57,7 @@ if (window.top !== window.self) {
       img.src = url;
       img.style.top = `${y}px`;
       img.style.left = `${x}px`;
+      img.style.opacity = OVERLAY_IMAGE_MAX_OPACITY;
       pillButtonContainer.querySelector(
         '#overlay-toggle-child'
       ).innerText = `Toggle overlay for '${name}'`;
@@ -77,12 +78,20 @@ if (window.top !== window.self) {
       pillButtonContainer.appendChild(button);
     };
 
-    createButton(
-      'Toggle overlay (unloaded)',
-      toggleOverlay,
-      'overlay-toggle-child'
-    );
+    setInterval(() => {
+      // Shadow root content gets replaced after placing a square, so this is a hacky way to detect the buttons were removed and re-add them
+      const toggleOverlayButton = pillButtonContainer.querySelector(
+        '#overlay-toggle-child'
+      );
+      if (!toggleOverlayButton) {
+        createButton(
+          'Toggle overlay (unloaded)',
+          toggleOverlay,
+          'overlay-toggle-child'
+        );
 
-    createButton('Load settings', loadOverlay);
+        createButton('Load overlay', loadOverlay);
+      }
+    }, 500);
   });
 }
