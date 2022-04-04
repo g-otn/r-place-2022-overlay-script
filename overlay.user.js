@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         r/place 2022 Image Overlay
 // @namespace    http://tampermonkey.net/
-// @version      0.4
+// @version      0.5
 // @description  Script that adds a button to toggle an hardcoded image shown in the 2022's r/place canvas
 // @author       g-otn
 // @match        https://hot-potato.reddit.com/embed*
@@ -23,7 +23,7 @@ if (window.top !== window.self) {
     img.style.position = 'absolute';
     img.style.imageRendering = 'pixelated';
     img.style.opacity = OVERLAY_IMAGE_MAX_OPACITY;
-    img.style.outline = '5px inset grey';
+    img.style.outline = '2px inset grey';
     img.style.zIndex = '100';
 
     const mainContainer = document
